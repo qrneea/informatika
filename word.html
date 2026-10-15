@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembelajaran Interaktif Microsoft Word - Informatika SMK</title>
+    <style>
+        :root {
+            --primary: #1d4ed8;
+            --primary-dark: #1e40af;
+            --primary-light: #eff6ff;
+            --bg-color: #f1f5f9;
+            --text-color: #1e293b;
+            --border-color: #cbd5e1;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; }
+        
+        header { background-color: var(--primary); color: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .container { max-width: 1150px; margin: 0 auto; padding: 20px; width: 100%; }
+        .header-flex { display: flex; flex-direction: column; justify-content: space-between; align-items: center; gap: 15px; }
+        @media(min-width: 768px) { .header-flex { flex-direction: row; } }
+        
+        .logo-box { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { background: white; color: var(--primary); padding: 10px 14px; border-radius: 8px; font-weight: bold; font-size: 20px; }
+        
+        nav { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tab-btn { background: rgba(255,255,255,0.15); border: none; color: white; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .tab-btn:hover { background: rgba(255,255,255,0.25); }
+        .tab-btn.active { background: var(--primary-dark); }
+
+        main { flex-grow: 1; padding: 20px 0; }
+        .card { background: white; padding: 24px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid var(--border-color); margin-bottom: 20px; }
+        
+        h2 { color: var(--primary-dark); margin-bottom: 15px; font-size: 1.5rem; display: flex; align-items: center; gap: 10px; }
+        p { line-height: 1.6; color: #475569; margin-bottom: 10px; }
+        
+        .grid-3 { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        @media(min-width: 640px) { .grid-3 { grid-template-columns: repeat(2, 1fr); } }
+        @media(min-width: 1024px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+
+        .module-card { background: #f8fafc; border: 1px solid var(--border-color); padding: 16px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .module-card:hover { background: var(--primary-light); border-color: #60a5fa; transform: translateY(-2px); }
+        .module-num { color: var(--primary); font-weight: bold; font-size: 1.05rem; margin-bottom: 6px; }
+        .module-card h3 { font-size: 1rem; color: #1e293b; margin-bottom: 4px; }
+        .module-card p { font-size: 0.82rem; color: #64748b; margin: 0; }
+
+        .sim-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media(min-width: 900px) { .sim-grid { grid-template-columns: 1fr 1.6fr; } }
+
+        .feature-list { display: flex; flex-direction: column; gap: 8px; }
+        .feature-btn { text-align: left; padding: 12px 14px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; font-weight: 600; color: #334155; transition: 0.2s; font-size: 0.9rem; }
+        .feature-btn:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary-dark); }
+
+        .result-box { margin-top: 15px; background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); max-height: 480px; overflow-y: auto; }
+        
+        .quiz-option { width: 100%; text-align: left; padding: 12px; margin-bottom: 10px; border: 1px solid var(--border-color); background: white; border-radius: 6px; cursor: pointer; transition: 0.2s; font-size: 0.95rem; }
+        .quiz-option:hover { background: #f8fafc; }
+        .quiz-option.correct { background: #dcfce7 !important; border-color: #16a34a !important; color: #166534; font-weight: bold; }
+        .quiz-option.wrong { background: #fee2e2 !important; border-color: #dc2626 !important; color: #991b1b; }
+
+        .hidden { display: none !important; }
+        footer { background: white; border-top: 1px solid var(--border-color); text-align: center; padding: 15px; font-size: 0.8rem; color: #64748b; margin-top: auto; }
+        code { background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.85em; color: #0f172a; }
+        ol, ul { padding-left: 20px; margin: 8px 0; display: flex; flex-direction: column; gap: 6px; }
+        li { color: #334155; font-size: 0.92rem; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-flex">
+            <div class="logo-box">
+                <div class="logo-icon">📝</div>
+                <div>
+                    <h1 style="font-size: 1.2rem; font-weight: bold;">Informatika SMK: Microsoft Word</h1>
+                    <p style="font-size: 0.75rem; color: #bfdbfe; margin: 0;">Modul Tutorial Detail & Simulasi Administrasi Perkantoran</p>
+                </div>
+            </div>
+            <nav>
+                <button id="btn-materi" class="tab-btn active" data-target="materi">Peta Materi & Tutorial</button>
+                <button id="btn-simulasi" class="tab-btn" data-target="simulasi">Pusat Panduan Praktis</button>
+                <button id="btn-kuis" class="tab-btn" data-target="kuis">Kuis Interaktif</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+
+        <!-- TAB 1: MATERI & TUTORIAL DETAIL -->
+        <section id="tab-materi" class="tab-content">
+            <div class="card">
+                <h2>📖 Modul Pembelajaran Microsoft Word SMK</h2>
+                <p>Klik salah satu modul di bawah ini untuk mempelajari teori beserta tutorial langkah demi langkah secara mendalam.</p>
+                
+                <div class="grid-3" style="margin-top: 20px;">
+                    <div class="module-card" onclick="selectModule(1)">
+                        <div class="module-num">01</div>
+                        <h3>Pengaturan Kertas & Margin</h3>
+                        <p>Ukuran Kertas (A4/F4), Orientasi, & Batas Tepi.</p>
+                    </div>
+                    <div class="module-card" onclick="selectModule(2)">
+                        <div class="module-num">02</div>
+                        <h3>Bullet & Numbering</h3>
+                        <p>Penomoran terstruktur & poin hierarki dokumen.</p>
+                    </div>
+                    <div class="module-card" onclick="selectModule(3)">
+                        <div class="module-num">03</div>
+                        <h3>Daftar Isi Otomatis</h3>
+                        <p>Heading Styles & Table of Contents.</p>
+                    </div>
+                    <div class="module-card" onclick="selectModule(4)">
+                        <div class="module-num">04</div>
+                        <h3>Mail Merge (Surat Massal)</h3>
+                        <p>Integrasi database Excel ke naskah Word.</p>
+                    </div>
+                    <div class="module-card" onclick="selectModule(5)">
+                        <div class="module-num">05</div>
+                        <h3>Nomor Halaman Berbeda</h3>
+                        <p>Pemisahan Section Romawi dan Angka Biasa.</p>
+                    </div>
+                    <div class="module-card" onclick="selectModule(6)">
+                        <div class="module-num">06</div>
+                        <h3>Gambar & Tabel Profesional</h3>
+                        <p>Wrap Text, Crop, & Perataan Tabel.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 id="mod-title" style="font-size: 1.3rem; color: var(--primary-dark); margin-bottom: 12px;">Pilih modul di atas untuk melihat isi materi.</h3>
+                <div id="mod-body" style="font-size: 0.95rem;">
+                    <p>Silakan klik salah satu kotak modul di atas untuk membaca panduan tutorial detail.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: PUSAT PANDUAN PRAKTIS (SIMULATOR FITUR) -->
+        <section id="tab-simulasi" class="tab-content hidden">
+            <div class="card">
+                <h2>⚙️ Pusat Panduan Langkah Demi Langkah</h2>
+                <p>Pilih topik administrasi perkantoran di bawah ini untuk melihat prosedur operasional standar (SOP) pengerjaannya di Microsoft Word.</p>
+                
+                <div class="sim-grid" style="margin-top: 20px;">
+                    <div class="feature-list">
+                        <button class="feature-btn" onclick="showFeature(1)">1. Tutorial Pengaturan Kertas & Margin</button>
+                        <button class="feature-btn" onclick="showFeature(2)">2. Tutorial Bullet & Numbering</button>
+                        <button class="feature-btn" onclick="showFeature(3)">3. Tutorial Memasukkan & Setting Gambar</button>
+                        <button class="feature-btn" onclick="showFeature(4)">4. Tutorial Membuat & Merapikan Tabel</button>
+                        <button class="feature-btn" onclick="showFeature(5)">5. Tutorial Mail Merge (Surat Massal)</button>
+                        <button class="feature-btn" onclick="showFeature(6)">6. Tutorial Pembuatan Daftar Isi</button>
+                    </div>
+
+                    <div class="result-box">
+                        <h4 id="feat-title" style="font-size: 1.1rem; font-weight: bold; color: var(--primary-dark); margin-bottom: 10px;">Pilih topik di samping kiri</h4>
+                        <div id="feat-desc" style="color: #334155; line-height: 1.6;">
+                            Panduan operasional detail akan ditampilkan di sini.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: KUIS INTERAKTIF -->
+        <section id="tab-kuis" class="tab-content hidden">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h2>🧩 Kuis Evaluasi Kompetensi Microsoft Word</h2>
+                    <span id="quiz-progress" style="font-size: 0.9rem; font-weight: bold; color: #64748b;">Soal 1 dari 5</span>
+                </div>
+
+                <div id="quiz-container">
+                    <h3 id="question-text" style="font-size: 1.1rem; margin-bottom: 15px;">Pertanyaan akan dimuat di sini...</h3>
+                    <div id="options-box"></div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                        <div id="quiz-feedback" style="font-size: 0.9rem; font-weight: 500;"></div>
+                        <button id="next-btn" class="tab-btn hidden" style="background: var(--primary);">Lanjut</button>
+                    </div>
+                </div>
+
+                <div id="quiz-score-card" class="hidden" style="text-align: center; padding: 30px 0;">
+                    <div id="final-score" style="font-size: 3rem; font-weight: bold; color: var(--primary); margin-bottom: 10px;">0</div>
+                    <h3 style="font-size: 1.2rem; margin-bottom: 8px;">Kuis Selesai!</h3>
+                    <p id="score-message" style="margin-bottom: 20px;">Terima kasih telah menyelesaikan kuis latihan Microsoft Word.</p>
+                    <button id="reset-quiz-btn" class="tab-btn" style="background: var(--primary);">Ulangi Kuis</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>Modul Pembelajaran Interaktif Informatika SMK - Microsoft Word &copy; 2026</p>
+    </footer>
+
+    <!-- Script Application Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tab Navigation Logic
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(btn => {
+                if(!btn.getAttribute('data-target')) return;
+                btn.addEventListener('click', () => {
+                    const targetId = btn.getAttribute('data-target');
+                    tabButtons.forEach(b => { if(b.getAttribute('data-target')) b.classList.remove('active'); });
+                    tabContents.forEach(c => c.classList.add('hidden'));
+                    btn.classList.add('active');
+                    document.getElementById('tab-' + targetId).classList.remove('hidden');
+                });
+            });
+
+            // Detailed Tutorial Content for Modules
+            const modules = {
+                1: {
+                    title: "Modul 1: Tutorial Pengaturan Kertas (Paper Size, Orientation, & Margins)",
+                    body: `
+                        <p>Pengaturan ukuran dan batas halaman lembar kerja adalah langkah awal wajib sebelum mengetik laporan resmi:</p>
+                        <ol>
+                            <li><strong>Mengatur Ukuran Kertas (Size):</strong>
+                                <ul>
+                                    <li>Buka tab <strong>Layout</strong> di bagian atas lembar kerja.</li>
+                                    <li>Klik ikon <strong>Size</strong>, lalu pilih ukuran standar seperti <code>A4</code> (21 x 29.7 cm) atau <code>F4 / Folio</code> (21.5 x 33 cm) sesuai ketentuan laporan instansi.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Mengatur Orientasi Halaman (Orientation):</strong>
+                                <ul>
+                                    <li>Masih di tab <strong>Layout</strong>, klik ikon <strong>Orientation</strong>.</li>
+                                    <li>Pilih <code>Portrait</code> untuk posisi tegak berdiri (umum digunakan) atau <code>Landscape</code> untuk posisi mendatar (biasanya untuk tabel data yang sangat lebar).</li>
+                                </ul>
+                            </li>
+                            <li><strong>Mengatur Batas Tepi Kertas (Margins):</strong>
+                                <ul>
+                                    <li>Klik <strong>Margins</strong> -> Pilih <strong>Custom Margins...</strong> di bagian bawah.</li>
+                                    <li>Isikan ukuran standar skripsi/laporan resmi: <strong>Top (Atas): 4 cm</strong>, <strong>Left (Kiri): 4 cm</strong>, <strong>Bottom (Bawah): 3 cm</strong>, <strong>Right (Kanan): 3 cm</strong>.</li>
+                                    <li>Klik <strong>OK</strong>.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    `
+                },
+                2: {
+                    title: "Modul 2: Tutorial Bullet & Numbering (Penomoran & Poin Terstruktur)",
+                    body: `
+                        <p>Bullet dan Numbering digunakan untuk merapikan daftar item, rincian langkah, atau hierarki sub-bab agar mudah dibaca:</p>
+                        <ol>
+                            <li><strong>Menggunakan Bullet (Simbol Poin):</strong>
+                                <ul>
+                                    <li>Blok teks daftar yang ingin diberi simbol titik/simbol khusus.</li>
+                                    <li>Masuk ke tab <strong>Home</strong>, pada grup <em>Paragraph</em>, klik ikon panah kecil di samping tombol <strong>Bullet</strong> (simbol titik-titik).</li>
+                                    <li>Pilih bentuk simbol sesuai selera (lingkaran hitam, centang, kotak, dll).</li>
+                                </ul>
+                            </li>
+                            <li><strong>Menggunakan Numbering (Penomoran Angka/Huruf):</strong>
+                                <ul>
+                                    <li>Sorot baris teks yang memerlukan urutan angka.</li>
+                                    <li>Klik tombol <strong>Numbering</strong> di sebelah ikon Bullet (ikon angka <code>1. 2. 3.</code>).</li>
+                                </ul>
+                            </li>
+                            <li><strong>Membuat Multilevel List (Poin Bertingkat):</strong> Untuk sub-poin di bawah angka utama (misal huruf a, b, c), gunakan ikon <strong>Multilevel List</strong> di sebelah Numbering agar penataan menjorok ke dalam secara otomatis.</li>
+                        </ol>
+                    `
+                },
+                3: {
+                    title: "Modul 3: Tutorial Pembuatan Daftar Isi Otomatis",
+                    body: `
+                        <p>Jangan pernah membuat daftar isi secara manual. Gunakan fitur otomatis agar nomor halaman tersusun akurat:</p>
+                        <ol>
+                            <li><strong>Menerapkan Format Heading:</strong>
+                                <ul>
+                                    <li>Sorot judul bab utama, lalu pada tab <strong>Home</strong> klik <code>Heading 1</code>.</li>
+                                    <li>Untuk sub-bab, pilih gaya <code>Heading 2</code>.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Membuat Daftar Isi:</strong>
+                                <ul>
+                                    <li>Posisikan kursor di halaman kosong khusus daftar isi.</li>
+                                    <li>Pindah ke tab <strong>References</strong>, klik <strong>Table of Contents</strong> dan pilih model instan.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Cara Memperbarui (Update Table):</strong> Klik kanan pada tabel daftar isi -> <strong>Update Field</strong> -> <strong>Update entire table</strong> -> OK.</li>
+                        </ol>
+                    `
+                },
+                4: {
+                    title: "Modul 4: Tutorial Mail Merge (Surat / Sertifikat Massal)",
+                    body: `
+                        <p>Mail Merge menyatukan naskah surat di Word dengan database nama di Excel untuk pembuatan dokumen massal:</p>
+                        <ol>
+                            <li>Buat file Excel berisi daftar nama dan alamat penerima. Simpan dan tutup filenya.</li>
+                            <li>Buka naskah surat di Microsoft Word.</li>
+                            <li>Buka tab <strong>Mailings</strong> -> <strong>Start Mail Merge</strong> -> <strong>Letters</strong>.</li>
+                            <li>Klik <strong>Select Recipients > Use an Existing List</strong>, lalu pilih file Excel Anda.</li>
+                            <li>Letakkan kursor di bagian nama surat, klik <strong>Insert Merge Field</strong> untuk memasukkan variabel nama.</li>
+                            <li>Klik <strong>Preview Results</strong> untuk melihat hasilnya.</li>
+                        </ol>
+                    `
+                },
+                5: {
+                    title: "Modul 5: Tutorial Penomoran Halaman Berbeda (Romawi & Angka)",
+                    body: `
+                        <p>Membuat halaman sampul tanpa nomor, kata pengantar berangka romawi (i, ii), dan isi bab berangka biasa (1, 2):</p>
+                        <ol>
+                            <li>Letakkan kursor di akhir halaman Sampul, klik <strong>Layout > Breaks > Next Page</strong>.</li>
+                            <li>Masuk ke Footer halaman baru, nonaktifkan opsi <strong>Link to Previous</strong> pada tab Header & Footer.</li>
+                            <li>Gunakan <strong>Page Number > Format Page Numbers</strong> untuk mengubah format menjadi Romawi atau Angka Biasa sesuai bagian section.</li>
+                        </ol>
+                    `
+                },
+                6: {
+                    title: "Modul 6: Tutorial Memasukkan Gambar & Tabel Profesional",
+                    body: `
+                        <p>Kelengkapan laporan prakerin sangat bergantung pada tata letak gambar dan tabel:</p>
+                        <ol>
+                            <li><strong>Memasukkan Gambar:</strong> Klik tab <strong>Insert > Pictures</strong>. Atur perataan teks di sekeliling gambar menggunakan <strong>Wrap Text > Square</strong>.</li>
+                            <li><strong>Membuat Tabel:</strong> Klik <strong>Insert > Table</strong>. Berikan warna header tabel melalui tab <em>Table Design</em> dan ratakan posisi teks di tengah sel lewat tab <em>Layout</em> tabel.</li>
+                        </ol>
+                    `
+                }
+            };
+
+            window.selectModule = function(id) {
+                document.getElementById('mod-title').innerText = modules[id].title;
+                document.getElementById('mod-body').innerHTML = modules[id].body;
+            }
+            selectModule(1);
+
+            // Detailed SOP / Practical Guides
+            const features = {
+                1: {
+                    title: "1. Panduan Detail Pengaturan Kertas & Margin",
+                    desc: `
+                        <p><strong>Tujuan:</strong> Menyesuaikan ukuran fisik kertas dan batas tepi pengetikan laporan.</p>
+                        <ol style="padding-left: 18px; margin-top: 6px;">
+                            <li>Masuk ke tab <strong>Layout</strong> di bagian atas menu Word.</li>
+                            <li>Klik ikon <strong>Size</strong>, pilih ukuran <code>A4</code> atau <code>F4</code>.</li>
+                            <li>Klik ikon <strong>Orientation</strong> untuk memilih posisi tegak (Portrait) atau mendatar (Landscape).</li>
+                            <li>Klik ikon <strong>Margins > Custom Margins</strong>, lalu masukkan ukuran batas tepi (Top: 4cm, Left: 4cm, Bottom: 3cm, Right: 3cm). Klik OK.</li>
+                        </ol>
+                    `
+                },
+                2: {
+                    title: "2. Panduan Detail Bullet & Numbering",
+                    desc: `
+                        <p><strong>Tujuan:</strong> Membuat poin rincian atau urutan angka secara otomatis dan rapi.</p>
+                        <ol style="padding-left: 18px; margin-top: 6px;">
+                            <li>Blok teks baris yang ingin diatur di lembar kerja.</li>
+                            <li>Masuk ke tab <strong>Home</strong> di bagian grup <em>Paragraph</em>.</li>
+                            <li>Klik ikon <strong>Bullet</strong> untuk membuat poin simbol titik/simbol khusus.</li>
+                            <li>Klik ikon <strong>Numbering</strong> untuk membuat penomoran urut angka (1, 2, 3) secara otomatis.</li>
+                            <li>Gunakan tombol <strong>Tab</strong> pada keyboard untuk membuat sub-poin menjorok ke dalam.</li>
+                        </ol>
+                    `
+                },
+                3: {
+                    title: "3. Panduan Detail Memasukkan & Setting Gambar",
+                    desc: `
+                        <p><strong>Tujuan:</strong> Menyisipkan foto dokumentasi kegiatan agar posisinya rapi dan tidak merusak teks.</p>
+                        <ol style="padding-left: 18px; margin-top: 6px;">
+                            <li>Klik tab <strong>Insert > Pictures > This Device</strong> dan pilih foto.</li>
+                            <li>Klik gambar, buka tab <em>Picture Format</em>, lalu pilih <strong>Wrap Text > Square</strong> agar teks mengalir rapi.</li>
+                            <li>Gunakan fitur <strong>Crop</strong> untuk memotong bagian yang tidak perlu.</li>
+                        </ol>
+                    `
+                },
+                4: {
+                    title: "4. Panduan Detail Membuat & Merapikan Tabel",
+                    desc: `
+                        <p><strong>Tujuan:</strong> Menyajikan data laporan dalam bentuk tabel terstruktur.</p>
+                        <ol style="padding-left: 18px; margin-top: 6px;">
+                            <li>Klik tab <strong>Insert > Table</strong>, tentukan ukuran kolom dan baris.</li>
+                            <li>Beri warna latar belakang header melalui tab <strong>Table Design</strong>.</li>
+                            <li>Blok tabel, buka tab <strong>Layout</strong> tabel, lalu klik <strong>Align Center</strong> agar teks berada di tengah sel.</li>
+                        </ol>
+                    `
+                },
+                5: {
+                    title: "5. Panduan Detail Mail Merge (Surat Massal)",
+                    desc: `
+                        <p><strong>Tujuan:</strong> Mengirim undangan atau sertifikat ke banyak orang secara otomatis.</p>
+                        <ol style="padding-left: 18px; margin-top: 6px;">
+                            <li>Siapkan database nama di Excel. Buka naskah surat di Word.</li>
+                            <li>Masuk ke <strong>Mailings > Start Mail Merge > Letters</strong>.</li>
+                            <li>Hubungkan file Excel via <strong>Select Recipients > Use an Existing List</strong>.</li>
+                            <li>Sisipkan variabel dengan klik <strong>Insert Merge Field</strong>, lalu cetak menggunakan <strong>Finish & Merge</strong>.</li>
+                        </ol>
+                    `
+                },
+                6: {
+                    title: "6. Panduan Detail Pembuatan Daftar Isi Otomatis",
+                    desc: `
+                        <p><strong>Tujuan:</strong> Menyusun laporan PKL tanpa mengetik titik-titik manual.</p>
+                        <ol style="padding-left: 18px; margin-top: 6px;">
+                            <li>Terapkan <strong>Heading 1</strong> untuk judul bab dan <strong>Heading 2</strong> untuk sub-bab dari tab Home.</li>
+                            <li>Buka halaman kosong daftar isi, klik <strong>References > Table of Contents</strong>.</li>
+                            <li>Klik kanan tabel daftar isi lalu pilih <strong>Update Field</strong> jika ada perubahan halaman.</li>
+                        </ol>
+                    `
+                }
+            };
+
+            window.showFeature = function(id) {
+                document.getElementById('feat-title').innerText = features[id].title;
+                document.getElementById('feat-desc').innerHTML = features[id].desc;
+            }
+            showFeature(1);
+
+            // Quiz Data & Logic
+            const quizData = [
+                {
+                    question: "Tab menu manakah di Microsoft Word yang digunakan untuk mengatur ukuran kertas (Size) dan orientasi (Orientation)?",
+                    options: ["Home", "Insert", "Layout / Page Layout", "References"],
+                    correct: 2
+                },
+                {
+                    question: "Ikon di tab Home yang digunakan untuk membuat daftar rincian menggunakan simbol titik atau bentuk khusus disebut...",
+                    options: ["Numbering", "Bullet", "Styles", "Find & Replace"],
+                    correct: 1
+                },
+                {
+                    question: "Fitur di Microsoft Word yang digunakan untuk membuat surat massal dengan data dari Excel disebut...",
+                    options: ["AutoCorrect", "Mail Merge", "Hyperlink", "Watermark"],
+                    correct: 1
+                },
+                {
+                    question: "Untuk membuat Daftar Isi secara otomatis, gaya teks (style) apa yang wajib diterapkan pada judul bab?",
+                    options: ["Heading 1", "Normal Text", "Subtle Emphasis", "Quote"],
+                    correct: 0
+                },
+                {
+                    question: "Tombol kombinasi keyboard (shortcut) apa yang umumnya digunakan untuk menyimpan dokumen (Save) dengan cepat?",
+                    options: ["Ctrl + P", "Ctrl + C", "Ctrl + V", "Ctrl + S"],
+                    correct: 3
+                }
+            ];
+
+            let currentQuestionIndex = 0;
+            let score = 0;
+            let answered = false;
+
+            function loadQuiz() {
+                answered = false;
+                document.getElementById('next-btn').classList.add('hidden');
+                document.getElementById('quiz-feedback').innerText = "";
+                
+                if (currentQuestionIndex < quizData.length) {
+                    let q = quizData[currentQuestionIndex];
+                    document.getElementById('quiz-progress').innerText = `Soal ${currentQuestionIndex + 1} dari ${quizData.length}`;
+                    document.getElementById('question-text').innerText = q.question;
+                    
+                    let optionsHtml = "";
+                    q.options.forEach((opt, idx) => {
+                        optionsHtml += `<button class="quiz-option" data-index="${idx}">${opt}</button>`;
+                    });
+                    document.getElementById('options-box').innerHTML = optionsHtml;
+
+                    document.querySelectorAll('.quiz-option').forEach(btnOpt => {
+                        btnOpt.addEventListener('click', (e) => {
+                            checkAnswer(parseInt(e.currentTarget.getAttribute('data-index')));
+                        });
+                    });
+                } else {
+                    showScore();
+                }
+            }
+
+            function checkAnswer(selectedIdx) {
+                if (answered) return;
+                answered = true;
+
+                let q = quizData[currentQuestionIndex];
+                let feedback = document.getElementById('quiz-feedback');
+                const optionButtons = document.querySelectorAll('.quiz-option');
+
+                optionButtons.forEach((btn, idx) => {
+                    if (idx === q.correct) {
+                        btn.classList.add('correct');
+                    }
+                    if (idx === selectedIdx && selectedIdx !== q.correct) {
+                        btn.classList.add('wrong');
+                    }
+                });
+
+                if (selectedIdx === q.correct) {
+                    feedback.innerHTML = '<span style="color: #16a34a; font-weight: bold;">✓ Benar!</span>';
+                    score += 20;
+                } else {
+                    feedback.innerHTML = '<span style="color: #dc2626; font-weight: bold;">✕ Kurang tepat.</span>';
+                }
+
+                document.getElementById('next-btn').classList.remove('hidden');
+            }
+
+            const nextBtn = document.getElementById('next-btn');
+            if(nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    currentQuestionIndex++;
+                    loadQuiz();
+                });
+            }
+
+            function showScore() {
+                document.getElementById('quiz-container').classList.add('hidden');
+                document.getElementById('quiz-progress').classList.add('hidden');
+                document.getElementById('quiz-score-card').classList.remove('hidden');
+                document.getElementById('final-score').innerText = score + " / 100";
+                
+                let msg = "";
+                if (score === 100) msg = "Luar biasa! Penguasaan materi Microsoft Word Anda sudah sangat profesional.";
+                else if (score >= 70) msg = "Bagus! Anda sudah memahami sebagian besar konsep pengolahan dokumen.";
+                else msg = "Tetap semangat! Pelajari kembali materi modul dan panduan praktis.";
+                
+                document.getElementById('score-message').innerText = msg;
+            }
+
+            const resetBtn = document.getElementById('reset-quiz-btn');
+            if(resetBtn) {
+                resetBtn.addEventListener('click', () => {
+                    currentQuestionIndex = 0;
+                    score = 0;
+                    document.getElementById('quiz-container').classList.remove('hidden');
+                    document.getElementById('quiz-progress').classList.remove('hidden');
+                    document.getElementById('quiz-score-card').classList.add('hidden');
+                    loadQuiz();
+                });
+            }
+
+            loadQuiz();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembelajaran Interaktif Microsoft Excel - Informatika SMK</title>
+    <style>
+        :root {
+            --primary: #047857;
+            --primary-dark: #065f46;
+            --primary-light: #ecfdf5;
+            --bg-color: #f1f5f9;
+            --text-color: #1e293b;
+            --border-color: #cbd5e1;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; }
+        
+        header { background-color: var(--primary); color: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .container { max-width: 1050px; margin: 0 auto; padding: 20px; width: 100%; }
+        .header-flex { display: flex; flex-direction: column; justify-content: space-between; align-items: center; gap: 15px; }
+        @media(min-width: 768px) { .header-flex { flex-direction: row; } }
+        
+        .logo-box { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { background: white; color: var(--primary); padding: 10px 14px; border-radius: 8px; font-weight: bold; font-size: 20px; }
+        
+        nav { display: flex; gap: 8px; }
+        .tab-btn { background: rgba(255,255,255,0.15); border: none; color: white; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .tab-btn:hover { background: rgba(255,255,255,0.25); }
+        .tab-btn.active { background: var(--primary-dark); }
+
+        main { flex-grow: 1; padding: 20px 0; }
+        .card { background: white; padding: 24px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid var(--border-color); margin-bottom: 20px; }
+        
+        h2 { color: var(--primary-dark); margin-bottom: 15px; font-size: 1.5rem; display: flex; align-items: center; gap: 10px; }
+        p { line-height: 1.6; color: #475569; margin-bottom: 10px; }
+        
+        .grid-4 { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        @media(min-width: 640px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
+        @media(min-width: 1024px) { .grid-4 { grid-template-columns: repeat(4, 1fr); } }
+
+        .module-card { background: #f8fafc; border: 1px solid var(--border-color); padding: 16px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .module-card:hover { background: var(--primary-light); border-color: #34d399; transform: translateY(-2px); }
+        .module-num { color: var(--primary); font-weight: bold; font-size: 1.1rem; margin-bottom: 8px; }
+        .module-card h3 { font-size: 1rem; color: #1e293b; margin-bottom: 4px; }
+        .module-card p { font-size: 0.85rem; color: #64748b; margin: 0; }
+
+        .sim-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media(min-width: 900px) { .sim-grid { grid-template-columns: 1.2fr 1.8fr; } }
+
+        table { width: 100%; border-collapse: collapse; background: white; margin-top: 8px; margin-bottom: 12px; }
+        th, td { border: 1px solid var(--border-color); padding: 6px 8px; text-align: center; font-size: 0.85rem; }
+        th { background: #d1fae5; color: #065f46; }
+
+        .input-group { display: flex; gap: 10px; margin-top: 10px; }
+        input[type="text"] { flex-grow: 1; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-family: monospace; font-size: 0.95rem; }
+        .btn-primary { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .btn-primary:hover { background: var(--primary-dark); }
+
+        .result-box { margin-top: 15px; background: white; padding: 15px; border-radius: 6px; border: 1px solid var(--border-color); }
+        .result-text { font-family: monospace; font-size: 1.05rem; font-weight: bold; color: #334155; }
+        
+        .quiz-option { width: 100%; text-align: left; padding: 12px; margin-bottom: 10px; border: 1px solid var(--border-color); background: white; border-radius: 6px; cursor: pointer; transition: 0.2s; font-size: 0.95rem; }
+        .quiz-option:hover { background: #f8fafc; }
+        .quiz-option.correct { background: #d1fae5 !important; border-color: #059669 !important; color: #065f46; font-weight: bold; }
+        .quiz-option.wrong { background: #fee2e2 !important; border-color: #dc2626 !important; color: #991b1b; }
+
+        .hidden { display: none !important; }
+        footer { background: white; border-top: 1px solid var(--border-color); text-align: center; padding: 15px; font-size: 0.8rem; color: #64748b; margin-top: auto; }
+        code { background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.85em; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-flex">
+            <div class="logo-box">
+                <div class="logo-icon">📊</div>
+                <div>
+                    <h1 style="font-size: 1.2rem; font-weight: bold;">Informatika SMK: Microsoft Excel</h1>
+                    <p style="font-size: 0.75rem; color: #a7f3d0; margin: 0;">Modul Pembelajaran & Latihan Interaktif</p>
+                </div>
+            </div>
+            <nav>
+                <button id="btn-materi" class="tab-btn active" data-target="materi">Materi</button>
+                <button id="btn-simulasi" class="tab-btn" data-target="simulasi">Kalkulator & Rumus</button>
+                <button id="btn-kuis" class="tab-btn" data-target="kuis">Kuis Interaktif</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+
+        <!-- TAB 1: MATERI -->
+        <section id="tab-materi" class="tab-content">
+            <div class="card">
+                <h2>📖 Peta Materi Microsoft Excel SMK</h2>
+                <p>Pilih modul di bawah ini untuk mempelajari dasar hingga lanjutan penggunaan Microsoft Excel yang relevan dengan dunia kerja perkantoran maupun bisnis.</p>
+                
+                <div class="grid-4" style="margin-top: 20px;">
+                    <div class="module-card" onclick="selectModule(1)">
+                        <div class="module-num">01</div>
+                        <h3>Antarmuka & Dasar</h3>
+                        <p>Mengenal Cell, Range, Row, Column, dan Formula Bar.</p>
+                    </div>
+                    <div class="module-card" onclick="selectModule(2)">
+                        <div class="module-num">02</div>
+                        <h3>Fungsi Statistik Dasar</h3>
+                        <p>SUM, AVERAGE, MAX, MIN, dan COUNT.</p>
+                    </div>
+                    <div class="module-card" onclick="selectModule(3)">
+                        <div class="module-num">03</div>
+                        <h3>Fungsi Logika (IF)</h3>
+                        <p>Penggunaan IF tunggal dan IF bertingkat (Nested IF).</p>
+                    </div>
+                    <div class="module-card" onclick="selectModule(4)">
+                        <div class="module-num">04</div>
+                        <h3>Fungsi Lookup</h3>
+                        <p>Mencari data dengan VLOOKUP dan HLOOKUP.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 id="mod-title" style="font-size: 1.2rem; color: #1e293b; margin-bottom: 10px;">Pilih modul di atas untuk melihat isi materi.</h3>
+                <div id="mod-body">
+                    <p>Silakan klik salah satu kotak modul di atas untuk membaca ringkasan materi, contoh penulisan rumus, serta studi kasus penggunaannya.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: SIMULASI / KALKULATOR RUMUS -->
+        <section id="tab-simulasi" class="tab-content hidden">
+            <div class="card">
+                <h2>🧮 Simulator Rumus Interaktif</h2>
+                <p>Uji coba penulisan fungsi Excel (Statistik, Logika, VLOOKUP, HLOOKUP) dan lihat hasilnya secara instan.</p>
+                
+                <div class="sim-grid" style="margin-top: 20px;">
+                    <div>
+                        <!-- Data Tabel Utama -->
+                        <h3 style="font-size: 0.9rem; margin-bottom: 4px;">1. Tabel Nilai Siswa (Range A1:A4)</h3>
+                        <table>
+                            <thead>
+                                <tr><th>Cell</th><th>Nilai (A)</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td style="font-family: monospace; background: #f8fafc;">A1</td><td>80</td></tr>
+                                <tr><td style="font-family: monospace; background: #f8fafc;">A2</td><td>90</td></tr>
+                                <tr><td style="font-family: monospace; background: #f8fafc;">A3</td><td>75</td></tr>
+                                <tr><td style="font-family: monospace; background: #f8fafc;">A4</td><td>85</td></tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Data Tabel Referensi Lookup -->
+                        <h3 style="font-size: 0.9rem; margin-top: 12px; margin-bottom: 4px;">2. Tabel Referensi Barang (D1:E3)</h3>
+                        <table>
+                            <thead>
+                                <tr><th>Kode (Col 1)</th><th>Nama Barang (Col 2)</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td style="font-family: monospace;">A01</td><td>Buku Tulis</td></tr>
+                                <tr><td style="font-family: monospace;">A02</td><td>Pulpen Gel</td></tr>
+                                <tr><td style="font-family: monospace;">A03</td><td>Penggaris</td></tr>
+                            </tbody>
+                        </table>
+
+                        <div style="margin-top: 12px; font-size: 0.8rem; color: #64748b;">
+                            <p><strong>Contoh Rumus yang bisa dicoba:</strong></p>
+                            <ul style="padding-left: 16px; margin-top: 4px; display: flex; flex-direction: column; gap: 3px;">
+                                <li><code>=SUM(A1:A4)</code></li>
+                                <li><code>=AVERAGE(A1:A4)</code></li>
+                                <li><code>=IF(A1>=75,"Lulus","Remedial")</code></li>
+                                <li><code>=VLOOKUP("A02",D1:E3,2,FALSE)</code></li>
+                                <li><code>=HLOOKUP("A01",D1:E3,2,FALSE)</code></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <label style="display: block; font-size: 0.9rem; font-weight: bold; margin-bottom: 5px;">Ketik Formula Excel:</label>
+                            <div class="input-group">
+                                <input type="text" id="formula-input" placeholder='Contoh: =VLOOKUP("A01",D1:E3,2,FALSE)'>
+                                <button id="btn-eval" class="btn-primary">Jalankan</button>
+                            </div>
+                            <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 5px;">Gunakan huruf kapital untuk fungsi (SUM, AVERAGE, VLOOKUP, HLOOKUP, IF).</p>
+                        </div>
+
+                        <div class="result-box">
+                            <h4 style="font-size: 0.75rem; text-transform: uppercase; color: #94a3b8; margin-bottom: 4px;">Hasil Evaluasi:</h4>
+                            <div id="formula-result" class="result-text">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: KUIS INTERAKTIF -->
+        <section id="tab-kuis" class="tab-content hidden">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h2>🧩 Kuis Evaluasi Kompetensi Excel</h2>
+                    <span id="quiz-progress" style="font-size: 0.9rem; font-weight: bold; color: #64748b;">Soal 1 dari 5</span>
+                </div>
+
+                <div id="quiz-container">
+                    <h3 id="question-text" style="font-size: 1.1rem; margin-bottom: 15px;">Pertanyaan akan dimuat di sini...</h3>
+                    <div id="options-box"></div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                        <div id="quiz-feedback" style="font-size: 0.9rem; font-weight: 500;"></div>
+                        <button id="next-btn" class="btn-primary hidden">Lanjut</button>
+                    </div>
+                </div>
+
+                <div id="quiz-score-card" class="hidden" style="text-align: center; padding: 30px 0;">
+                    <div id="final-score" style="font-size: 3rem; font-weight: bold; color: var(--primary); margin-bottom: 10px;">0</div>
+                    <h3 style="font-size: 1.2rem; margin-bottom: 8px;">Kuis Selesai!</h3>
+                    <p id="score-message" style="margin-bottom: 20px;">Terima kasih telah menyelesaikan kuis latihan Microsoft Excel.</p>
+                    <button id="reset-quiz-btn" class="btn-primary">Ulangi Kuis</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>Modul Pembelajaran Interaktif Informatika SMK - Microsoft Excel &copy; 2026</p>
+    </footer>
+
+    <!-- Script Application Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tab Navigation Logic
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetId = btn.getAttribute('data-target');
+
+                    tabButtons.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.add('hidden'));
+
+                    btn.classList.add('active');
+                    document.getElementById('tab-' + targetId).classList.remove('hidden');
+                });
+            });
+
+            // Materials Data including VLOOKUP & HLOOKUP detailed explanation
+            const modules = {
+                1: {
+                    title: "Modul 1: Pengenalan Antarmuka & Dasar Excel",
+                    body: `
+                        <p>Microsoft Excel adalah program spreadsheet (lembar kerja elektronik) bagian dari Microsoft Office. Di SMK, pemahaman dasar antarmuka sangat krusial sebelum mengolah data akuntansi, inventaris, maupun laporan administrasi.</p>
+                        <ul style="padding-left: 20px; margin-top: 10px; display: flex; flex-direction: column; gap: 6px;">
+                            <li><strong>Cell:</strong> Pertemuan antara kolom (huruf: A, B, C...) dan baris (angka: 1, 2, 3...). Contoh: sel <code>A1</code>.</li>
+                            <li><strong>Range:</strong> Sekumpulan sel yang diblok, contohnya <code>A1:A10</code>.</li>
+                            <li><strong>Formula Bar:</strong> Kotak panjang di atas lembar kerja untuk mengetik atau mengedit isi rumus dan formula.</li>
+                            <li><strong>Aturan Penulisan:</strong> Setiap rumus atau fungsi di Excel <strong>wajib diawali dengan tanda sama dengan (=)</strong>.</li>
+                        </ul>
+                    `
+                },
+                2: {
+                    title: "Modul 2: Fungsi Statistik Dasar (SUM, AVERAGE, MAX, MIN, COUNT)",
+                    body: `
+                        <p>Fungsi dasar statistik digunakan untuk melakukan perhitungan cepat pada sekumpulan data numerik dalam rentang sel tertentu tanpa harus menjumlahkan secara manual.</p>
+                        <ul style="padding-left: 20px; margin-top: 10px; display: flex; flex-direction: column; gap: 8px;">
+                            <li><code>=SUM(range)</code> : Menghitung total penjumlahan nilai dalam suatu range. Contoh: <code>=SUM(A1:A5)</code></li>
+                            <li><code>=AVERAGE(range)</code> : Menghitung nilai rata-rata dari suatu range. Contoh: <code>=AVERAGE(A1:A5)</code></li>
+                            <li><code>=MAX(range)</code> : Mencari nilai tertinggi/maksimum dalam suatu range. Contoh: <code>=MAX(A1:A4)</code></li>
+                            <li><code>=MIN(range)</code> : Mencari nilai terendah/minimum dalam suatu range. Contoh: <code>=MIN(A1:A4)</code></li>
+                            <li><code>=COUNT(range)</code> : Menghitung jumlah sel yang berisi data angka. Contoh: <code>=COUNT(A1:A4)</code></li>
+                        </ul>
+                    `
+                },
+                3: {
+                    title: "Modul 3: Fungsi Logika (IF)",
+                    body: `
+                        <p>Fungsi <code>IF</code> digunakan untuk menguji suatu kondisi logika tertentu. Jika kondisi bernilai benar (TRUE), Excel akan menjalankan perintah pertama, dan jika salah (FALSE), perintah kedua dijalankan.</p>
+                        <div style="background: #f8fafc; padding: 10px; border-radius: 6px; font-family: monospace; font-size: 0.9rem; margin: 10px 0; border: 1px solid var(--border-color);">
+                            =IF(Logika, Nilai_Jika_Benar, Nilai_Jika_Salah)
+                        </div>
+                        <p><strong>Contoh Kasus:</strong> Menentukan kelulusan siswa dengan standar nilai KKM 75.</p>
+                        <div style="background: #f8fafc; padding: 10px; border-radius: 6px; font-family: monospace; font-size: 0.9rem; margin: 10px 0; border: 1px solid var(--border-color);">
+                            =IF(A1>=75, "Lulus", "Remedial")
+                        </div>
+                        <p style="font-size: 0.85rem; color: #64748b;">Artinya: Jika nilai sel A1 lebih dari atau sama dengan 75, maka tampilkan "Lulus", jika tidak maka tampilkan "Remedial".</p>
+                    `
+                },
+                4: {
+                    title: "Modul 4: Fungsi Pencarian (VLOOKUP & HLOOKUP)",
+                    body: `
+                        <p>Fungsi Lookup digunakan untuk mencari data pada tabel referensi secara vertikal atau horizontal di lembar kerja.</p>
+                        <ul style="padding-left: 20px; margin-top: 10px; display: flex; flex-direction: column; gap: 10px;">
+                            <li><strong>VLOOKUP (Vertical Lookup):</strong> Digunakan untuk mencari data secara tegak/vertikal berdasarkan kolom acuan pertama pada tabel referensi.
+                                <div style="background: #f8fafc; padding: 8px; border-radius: 4px; font-family: monospace; font-size: 0.8rem; margin-top: 4px; border: 1px solid var(--border-color);">=VLOOKUP(nilai_kunci, tabel_referensi, nomor_kolom, [range_lookup])</div>
+                                <p style="font-size: 0.82rem; color: #475569; margin-top: 3px;">Contoh: <code>=VLOOKUP("A02", D1:E3, 2, FALSE)</code> akan mencari kode "A02" dan mengambil data di kolom ke-2 (Nama Barang) secara akurat.</p>
+                            </li>
+                            <li><strong>HLOOKUP (Horizontal Lookup):</strong> Digunakan untuk mencari data secara mendatar/horizontal berdasarkan baris acuan pertama pada tabel referensi.
+                                <div style="background: #f8fafc; padding: 8px; border-radius: 4px; font-family: monospace; font-size: 0.8rem; margin-top: 4px; border: 1px solid var(--border-color);">=HLOOKUP(nilai_kunci, tabel_referensi, nomor_baris, [range_lookup])</div>
+                                <p style="font-size: 0.82rem; color: #475569; margin-top: 3px;">Contoh: <code>=HLOOKUP("A01", D1:E3, 2, FALSE)</code> akan mencari nilai dari baris referensi ke bawah secara horizontal.</p>
+                            </li>
+                        </ul>
+                    `
+                }
+            };
+
+            window.selectModule = function(id) {
+                document.getElementById('mod-title').innerText = modules[id].title;
+                document.getElementById('mod-body').innerHTML = modules[id].body;
+            }
+            selectModule(1);
+
+            // Simulator Logic with VLOOKUP and HLOOKUP support
+            const sampleData = [80, 90, 75, 85];
+            const lookupTable = {
+                "A01": "Buku Tulis",
+                "A02": "Pulpen Gel",
+                "A03": "Penggaris"
+            };
+
+            const btnEval = document.getElementById('btn-eval');
+            if(btnEval) {
+                btnEval.addEventListener('click', evaluateFormula);
+            }
+
+            function evaluateFormula() {
+                let formula = document.getElementById('formula-input').value.trim().toUpperCase();
+                let resultBox = document.getElementById('formula-result');
+
+                try {
+                    if (formula.startsWith('=SUM(A1:A4)')) {
+                        let sum = sampleData.reduce((a, b) => a + b, 0);
+                        resultBox.innerText = sum + " (Berhasil dievaluasi: Total Penjumlahan)";
+                        resultBox.style.color = "#047857";
+                    } else if (formula.startsWith('=AVERAGE(A1:A4)')) {
+                        let avg = sampleData.reduce((a, b) => a + b, 0) / sampleData.length;
+                        resultBox.innerText = avg + " (Berhasil dievaluasi: Nilai Rata-rata)";
+                        resultBox.style.color = "#047857";
+                    } else if (formula.startsWith('=MAX(A1:A4)')) {
+                        let max = Math.max(...sampleData);
+                        resultBox.innerText = max + " (Berhasil dievaluasi: Nilai Tertinggi)";
+                        resultBox.style.color = "#047857";
+                    } else if (formula.startsWith('=MIN(A1:A4)')) {
+                        let min = Math.min(...sampleData);
+                        resultBox.innerText = min + " (Berhasil dievaluasi: Nilai Terendah)";
+                        resultBox.style.color = "#047857";
+                    } else if (formula.startsWith('=COUNT(A1:A4)')) {
+                        let count = sampleData.length;
+                        resultBox.innerText = count + " (Berhasil dievaluasi: Jumlah Sel Angka)";
+                        resultBox.style.color = "#047857";
+                    } else if (formula.includes('IF(A1>75') || formula.includes('IF(A1>=75')) {
+                        let res = sampleData[0] >= 75 ? "Lulus" : "Remedial";
+                        resultBox.innerText = `"${res}" (Kondisi sel A1=80 dievaluasi)`;
+                        resultBox.style.color = "#047857";
+                    } else if (formula.startsWith('=VLOOKUP')) {
+                        // Check keys in lookup table
+                        if (formula.includes("A01")) {
+                            resultBox.innerText = `"${lookupTable["A01"]}" (VLOOKUP Berhasil menemukan data kolom ke-2)`;
+                        } else if (formula.includes("A02")) {
+                            resultBox.innerText = `"${lookupTable["A02"]}" (VLOOKUP Berhasil menemukan data kolom ke-2)`;
+                        } else if (formula.includes("A03")) {
+                            resultBox.innerText = `"${lookupTable["A03"]}" (VLOOKUP Berhasil menemukan data kolom ke-2)`;
+                        } else {
+                            resultBox.innerText = "#N/A (Error: Kunci pencarian VLOOKUP tidak ditemukan di tabel referensi)";
+                        }
+                        resultBox.style.color = "#047857";
+                    } else if (formula.startsWith('=HLOOKUP')) {
+                        if (formula.includes("A01") || formula.includes("A02") || formula.includes("A03")) {
+                            resultBox.innerText = `"Buku Tulis / Hasil HLOOKUP" (Berhasil dibaca secara horizontal)`;
+                        } else {
+                            resultBox.innerText = "#N/A (Error: Data HLOOKUP tidak ditemukan)";
+                        }
+                        resultBox.style.color = "#047857";
+                    } else {
+                        resultBox.innerText = "Error: Formula tidak dikenali oleh simulator sederhana ini atau format salah.";
+                        resultBox.style.color = "#dc2626";
+                    }
+                } catch (e) {
+                    resultBox.innerText = "Error dalam sintaks rumus.";
+                    resultBox.style.color = "#dc2626";
+                }
+            }
+
+            // Quiz Data & Logic
+            const quizData = [
+                {
+                    question: "Tanda apa yang wajib diketikkan paling awal sebelum menuliskan rumus atau fungsi di Microsoft Excel?",
+                    options: ["Tanda Tanya (?)", "Tanda Sama Dengan (=)", "Tanda Plus (+)", "Tanda Titik Koma (;)"],
+                    correct: 1
+                },
+                {
+                    question: "Fungsi Excel yang digunakan untuk mencari nilai rata-rata dari sekumpulan data adalah...",
+                    options: ["SUM", "AVERAGE", "MAX", "COUNT"],
+                    correct: 1
+                },
+                {
+                    question: "Perhatikan fungsi berikut: =IF(B2>=75, \"Tuntas\", \"Belum Tuntas\"). Apa arti fungsi tersebut?",
+                    options: [
+                        "Jika nilai B2 di bawah 75, statusnya Tuntas",
+                        "Jika nilai B2 lebih besar atau sama dengan 75, statusnya Tuntas, selain itu Belum Tuntas",
+                        "Menjumlahkan nilai B2 dengan 75",
+                        "Mencari rata-rata dari sel B2 dan 75"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "Fungsi yang digunakan untuk membaca data dari sebuah tabel acuan secara vertikal adalah...",
+                    options: ["HLOOKUP", "VLOOKUP", "LOOKUPVERTICAL", "VERTICALKEY"],
+                    correct: 1
+                },
+                {
+                    question: "Pertemuan antara kolom dan baris dalam lembar kerja Excel disebut dengan...",
+                    options: ["Range", "Sheet", "Cell", "Formula"],
+                    correct: 2
+                }
+            ];
+
+            let currentQuestionIndex = 0;
+            let score = 0;
+            let answered = false;
+
+            function loadQuiz() {
+                answered = false;
+                document.getElementById('next-btn').classList.add('hidden');
+                document.getElementById('quiz-feedback').innerText = "";
+                
+                if (currentQuestionIndex < quizData.length) {
+                    let q = quizData[currentQuestionIndex];
+                    document.getElementById('quiz-progress').innerText = `Soal ${currentQuestionIndex + 1} dari ${quizData.length}`;
+                    document.getElementById('question-text').innerText = q.question;
+                    
+                    let optionsHtml = "";
+                    q.options.forEach((opt, idx) => {
+                        optionsHtml += `<button class="quiz-option" data-index="${idx}">${opt}</button>`;
+                    });
+                    document.getElementById('options-box').innerHTML = optionsHtml;
+
+                    document.querySelectorAll('.quiz-option').forEach(btnOpt => {
+                        btnOpt.addEventListener('click', (e) => {
+                            checkAnswer(parseInt(e.currentTarget.getAttribute('data-index')));
+                        });
+                    });
+                } else {
+                    showScore();
+                }
+            }
+
+            function checkAnswer(selectedIdx) {
+                if (answered) return;
+                answered = true;
+
+                let q = quizData[currentQuestionIndex];
+                let feedback = document.getElementById('quiz-feedback');
+                const optionButtons = document.querySelectorAll('.quiz-option');
+
+                optionButtons.forEach((btn, idx) => {
+                    if (idx === q.correct) {
+                        btn.classList.add('correct');
+                    }
+                    if (idx === selectedIdx && selectedIdx !== q.correct) {
+                        btn.classList.add('wrong');
+                    }
+                });
+
+                if (selectedIdx === q.correct) {
+                    feedback.innerHTML = '<span style="color: #059669; font-weight: bold;">✓ Benar!</span>';
+                    score += 20;
+                } else {
+                    feedback.innerHTML = '<span style="color: #dc2626; font-weight: bold;">✕ Kurang tepat.</span>';
+                }
+
+                document.getElementById('next-btn').classList.remove('hidden');
+            }
+
+            const nextBtn = document.getElementById('next-btn');
+            if(nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    currentQuestionIndex++;
+                    loadQuiz();
+                });
+            }
+
+            function showScore() {
+                document.getElementById('quiz-container').classList.add('hidden');
+                document.getElementById('quiz-progress').classList.add('hidden');
+                document.getElementById('quiz-score-card').classList.remove('hidden');
+                document.getElementById('final-score').innerText = score + " / 100";
+                
+                let msg = "";
+                if (score === 100) msg = "Luar biasa! Penguasaan materi Microsoft Excel Anda sudah sangat baik.";
+                else if (score >= 70) msg = "Bagus! Anda sudah memahami sebagian besar konsep dasar Excel.";
+                else msg = "Tetap semangat! Pelajari kembali materi modul dan coba simulasi rumus kembali.";
+                
+                document.getElementById('score-message').innerText = msg;
+            }
+
+            const resetBtn = document.getElementById('reset-quiz-btn');
+            if(resetBtn) {
+                resetBtn.addEventListener('click', () => {
+                    currentQuestionIndex = 0;
+                    score = 0;
+                    document.getElementById('quiz-container').classList.remove('hidden');
+                    document.getElementById('quiz-progress').classList.remove('hidden');
+                    document.getElementById('quiz-score-card').classList.add('hidden');
+                    loadQuiz();
+                });
+            }
+
+            loadQuiz();
+        });
+    </script>
+</body>
+</html>
